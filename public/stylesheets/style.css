@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  padding: 32px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 14px;
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: start;
+}
+
+h1 {
+  font-weight: 800;
+  text-align: center;
+  align-self: center;
+}
+
+a {
+  color: #a20404;
+}
+
+button {
+  padding: 4px 8px;
+  border: 2px solid rgba(255, 255, 255, 50%);
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 25%));
+  background-color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: drop-shadow(0 6px 5px rgba(0, 0, 0, 50%));
+  transition: all .5s ease-in-out;
+}
+
+.fine-box {
+  padding: 8px;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 25%));
+  border: 2px solid rgba(255, 255, 255, 50%);
+}
+
+.block-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.person-card {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  max-width: 320px;
+  padding: 16px;
+  background-color: whitesmoke;
+}
+
+.inline-container {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+  flex-wrap: wrap;
+  width: 100%;
+}
