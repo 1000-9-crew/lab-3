@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1745839939343,
+    "lessonId": 1745833937327,
+    "studentId": 1745833695424,
+    "attendance": true
+  },
+  {
+    "id": 1745839945452,
+    "lessonId": 1745833937327,
+    "studentId": 1745833815798,
+    "mark": 89,
+    "attendance": true
+  },
+  {
+    "id": 1745839953017,
+    "lessonId": 1745833937327,
+    "studentId": 1745833839719,
+    "attendance": false
+  }
+]

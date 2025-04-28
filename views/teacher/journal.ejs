@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+    <a href="/">
+        <h1>Е-щоденник 🎰</h1>
+    </a>
+    <a href="/auth/logout"><button>вийти..😎</button></a>
+    <p>
+        <%=user.name%> - <%=user.role%>
+    </p>
+
+    <h2>Предмет: <a href="/teacher/subjects/<%= subject.id %>/"><u><%= subject.name %></u></a></h2>
+    <h2>Заняття: <i><%= lesson.name %></i></h2>
+    <h2>Журнал</h2>
+
+    <div class="adaptive-row-flex">
+        <table class="marks-table">
+            <thead>
+                <tr>
+                    <th>Студент</th>
+                    <th>Оцінка</th>
+                    <th>Присутність</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% marks.forEach(mark=> { %>
+                    <tr>
+                        <td>
+                            <%= mark.student.name %>
+                        </td>
+                        <td>
+                            <input type="number" name="mark" placeholder="Оцінка" value="<%= mark.mark %>"
+                                style="width: 7ch;" min="0" max="100" form="updateForm-<%= mark.id %>" />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="attendance" <%=mark.attendance ? 'checked' : '' %>
+                                form="updateForm-<%= mark.id %>" />
+                        </td>
+                        <td>
+                            <form id="updateForm-<%= mark.id %>" action="marks/<%= mark.id %>/update" method="post" class="inline-form">
+                                <button type="submit">Оновити</button>
+                            </form>
+                            <form action="marks/<%= mark.id %>/delete" method="post" class="inline-form">
+                                <button type="submit">🗑️</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <div class="sticky">
+            <div class="fine-box">
+                <h2>Додати оцінку</h2>
+                <form action="marks/create" method="post">
+                    <select name="studentId" required>
+                        <% students.forEach(student=> { %>
+                            <option value="<%=student.id%>">
+                                <%=student.name%>
+                            </option>
+                            <% }) %>
+                    </select>
+                    <input type="number" name="mark" placeholder="Оцінка" style="width: 7ch;" min="0" max="100" />
+                    <label>Присутність:
+                        <input type="checkbox" name="attendance" />
+                    </label>
+
+                    <input type="hidden" name="lessonId" value="<%=lesson.id%>" />
+
+                    <button type="submit">Додати оцінку</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

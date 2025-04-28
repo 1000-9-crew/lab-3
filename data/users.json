@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1745833695424,
+    "name": "Serhii V",
+    "login": "9mm",
+    "password": "rr",
+    "role": "student"
+  },
+  {
+    "id": 1745833726497,
+    "name": "Illia M",
+    "login": "gamble",
+    "password": ".net",
+    "role": "teacher"
+  },
+  {
+    "id": 1745833815798,
+    "name": "Student 1",
+    "login": "std1",
+    "password": "rr",
+    "role": "student"
+  },
+  {
+    "id": 1745833839719,
+    "name": "Student 2",
+    "login": "std2",
+    "password": "rr",
+    "role": "student"
+  },
+  {
+    "id": 1745833853442,
+    "name": "Student 3",
+    "login": "std3",
+    "password": "rr",
+    "role": "student"
+  },
+  {
+    "id": 1745833861989,
+    "name": "Student 4",
+    "login": "std4",
+    "password": "rr",
+    "role": "student"
+  }
+]

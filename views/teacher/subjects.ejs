@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+    <a href="/"><h1>Е-щоденник 🎰</h1></a>
+    <a href="/auth/logout"><button>вийти..😎</button></a>
+    <p><%=user.name%> - <%=user.role%></p>
+
+    <h2>Ваші предмети</h2>
+
+    <div class="subjects-list">
+        <% subjects.forEach(subject=> { %>
+            <div class="subject">
+                <a href="<%= subject.id %>/"><button>
+                    <%= subject.name %>
+                    <hr>
+                    <!-- <p>ім'я вчителя</p> -->
+                </button></a>
+            </div>
+            <% }) %>
+    </div>
+
+    <form action="create" method="post" class="fine-box">
+        <input type="text" name="name" placeholder="Назва" required />
+
+        <button type="submit">Створити предмет</button>
+    </form>
+
+</body>
+<script>
+    document.querySelectorAll('.subject button').forEach(subject => {
+        subject.style.backgroundColor = "hsl(" + (360 * Math.random()) + ',' +
+            (25 + 70 * Math.random()) + '%,' +
+            (85 + 10 * Math.random()) + '%)';
+    });
+</script>
+
+</html>

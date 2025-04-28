@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your journal</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+    <a href="/"><h1>Е-щоденник 🎰</h1></a>
+    <a href="/auth/logout"><button>вийти..😎</button></a>
+    <p><%=user.name%> - <%=user.role%></p>
+
+    <h2><%=subject.name%></h2>
+    <h2>Оцінки</h2>
+
+    <table class="marks-table">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Назва уроку</th>
+                <th>Оцінка</th>
+                <th>Відвідуваність</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% marks.forEach(lesson => { %>
+                <% lesson.marks.forEach(mark => { %>
+                    <tr>
+                        <td><%= lesson.date %></td>
+                        <td><%= lesson.name %></td>
+                        <td><%= mark.mark %></td>
+                        <td><%= mark.attendance ? "✅" : "❌" %></td>
+                    </tr>
+                <% }) %>
+                <% if (lesson.marks.length === 0) { %>
+                    <tr>
+                        <td><%= lesson.date %></td>
+                        <td><%= lesson.name %></td>
+                        <td colspan="2">-</td>
+                    </tr>
+                <% } %>
+            <% }) %>
+        </tbody>
+    </table>
+
+
+</body>
+</html>

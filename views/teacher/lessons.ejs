@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+    <a href="/"><h1>Е-щоденник 🎰</h1></a>
+    <a href="/auth/logout"><button>вийти..😎</button></a>
+    <p><%=user.name%> - <%=user.role%></p>
+
+    <h2>Предмет: <u><%= subject.name %></u></h2>
+
+    <div class="adaptive-row-flex">
+        <div class="lessons">
+            <h2>Теми занять</h2>
+            <div class="lessons-list">
+                <% lessons.forEach(lesson => { %>
+                    <div class="lesson">
+                        <div class="lesson-info">
+                            <p><%= lesson.date %></p>
+                            <hr>
+                            <a href="lessons/<%= lesson.id %>/"><%= lesson.name %></a>
+                        </div>
+
+                        <form action="lessons/<%= lesson.id %>/delete" method="post" class="inline-form">
+                            <button type="submit">🗑️</button>
+                        </form>
+                    </div>
+                <% }) %>
+                <form action="lessons/create" method="post" class="fine-box">
+                    <input type="text" name="name" placeholder="Назва" required />
+                    <input type="date" name="date" placeholder="Дата" required />
+                    <input type="hidden" name="subjectId" value="<%=subject.id%>" />
+
+                    <button type="submit">Створити заняття</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="students">
+            <h2>Студенти курсу</h2>
+            <ul>
+                <% students.enrolled.forEach(student => { %>
+                    <li class="fine-box"><%=student.name%>
+                        <form action="unenrollStudent" method="post" class="inline-form">
+                            <input type="hidden" name="studentId" value="<%=student.id%>" />
+                            <input type="hidden" name="subjectId" value="<%=subject.id%>" />
+                            <button style="border-radius: 8px; margin-left: 4px;" type="submit">🗑️</button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+
+            <div class="fine-box">
+                <form action="enrollStudent" method="post">
+                    <select name="studentId">
+                        <% students.unenrolled.forEach(student => { %>
+                            <option value="<%=student.id%>"><%=student.name%></option>
+                        <% }) %>
+                    </select>
+                    <input type="hidden" name="subjectId" value="<%=subject.id%>" />
+                    <button type="submit">Додати студента</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

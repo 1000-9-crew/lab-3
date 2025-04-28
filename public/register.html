@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script type="text/javascript" src="/javascripts/decor.js?v=1.0" defer></script>
+</head>
+
+<body>
+    <a href="/"><h1>Е-щоденник 🎰</h1></a>
+
+    <h2>Реєстрація</h2>
+    <form class="fine-box" action="/auth/register" method="post">
+        <input type="text" name="name" placeholder="ім'я прізвище" required />
+        <input type="text" name="login" placeholder="логін" required />
+        <input type="password" name="password" placeholder="пароль" required />
+        <select name="role">
+            <option value="student">я студент</option>
+            <option value="teacher">я викладач</option>
+        </select>
+
+        <button type="submit">реєстрація 🚪🎈</button>
+    </form>
+
+</body>
+</html>

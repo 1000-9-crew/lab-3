@@ -1,29 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@font-face {
+  font-family: 'Minecraft';
+  src: url('bitmap.ttf');
+}
+
 
 * {
   box-sizing: border-box;
   margin: 0;
+  font-family: Minecraft, "Montserrat", Arial, sans-serif;
+  font-weight: 400 !important;
+  /* border: 1px solid red; */
 }
 
 body {
-  padding: 32px;
+  padding: min(3%, 32px);
   font-family: "Montserrat", Arial, sans-serif;
   font-size: 14px;
   background-color: whitesmoke;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: start;
+  /* align-items: start; */
+  align-items: center;
 }
 
 h1 {
-  font-weight: 800;
+  font-weight: 700 !important;
   text-align: center;
   align-self: center;
+  margin-bottom: 12px;
+}
+
+h2 {
+  margin-bottom: 8px;
 }
 
 a {
-  color: #a20404;
+  color: #d32424;
 }
 
 button {
@@ -43,29 +57,207 @@ button:hover {
   padding: 8px;
   filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 25%));
   border: 2px solid rgba(255, 255, 255, 50%);
+  backdrop-filter: blur(3px);
 }
 
-.block-list {
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.center-div {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.decoration {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+}
+
+.subjects-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.subject button {
+  padding: 8px 16px;
+  border: 1px solid rgba(173, 30, 123, 0.5);
+
+  border-radius: 2px;
+  /* min-width: 300px;
+  min-height: 48px; */
+
+  font-weight: 600;
+  text-align: left;
+}
+
+.subject button p {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.subject button hr {
+  margin-bottom: 2px;
+  height: 1px;
+}
+
+.lessons-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lesson {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  gap: 12px;
+  min-width: 300px;
+  border: 1px solid rgba(173, 30, 123, 0.5);
+
+  border-radius: 8px;
+  text-align: left;
+  backdrop-filter: blur(3px);
+  background-color: white;
+}
+
+.lesson button {
+  height: 100%;
+  border-radius: 0 8px 8px 0;
+}
+
+.lesson-info {
+  display: flex;
+  flex-direction: column;
+
+  padding: 4px 0;
+  padding-left: 8px;
+}
+
+.lesson-info hr {
+  margin-bottom: 4px;
+}
+
+.lesson-info p {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.lesson-info a {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.adaptive-row-flex {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  gap: 8px;
-  padding: 8px 0;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.person-card {
+.students {
+  min-width: 300px;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  max-width: 320px;
-  padding: 16px;
-  background-color: whitesmoke;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.inline-container {
+.student {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  gap: 12px;
+  min-width: 300px;
+  border: 1px solid rgba(173, 30, 123, 0.5);
+
+  border-radius: 8px;
+  text-align: left;
+  backdrop-filter: blur(3px);
+  background-color: white;
+}
+
+.sticky {
+  position: sticky;
+  top: 16px;
+  float: right;
+}
+
+.marks-table {
+  border-collapse: collapse;
+  min-width: 320px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 25%);
+  border: 1px solid rgba(173, 30, 123, 0.5);
+}
+
+.marks-table thead {
+  background-color: #d8bfd8;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 52;
+}
+
+.marks-table th, .marks-table td {
+  padding: 4px 8px;
+  border: 1px solid rgba(173, 30, 123, 0.5);
+}
+
+.marks-table tbody tr {
+  border-bottom: 1.5px dashed rgba(173, 30, 123, 0.5);
+}
+
+.marks-table tbody tr:nth-of-type(even) {
+  background-color: #fff4ff;
+}
+
+.marks-table tbody tr:last-of-type {
+  border-bottom: 2px solid #580c4e;
+}
+
+#tapes {
+  overflow-x: clip;
+  position: absolute;
+  bottom: 5vh;
+}
+
+marquee {
+  background-color: #fee715ff;
+  color: #101820ff;
+  margin-top: 128px;
+  padding: 3px 0;
+  rotate: 5deg;
+  scale: 105%;
+  box-shadow: 0px 10px 10px #444444;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+input::placeholder {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 75%;
+}
+
+.inline-form {
+  display: inline;
+}
+
+label {
   display: flex;
   align-items: center;
-  gap: 70px;
-  flex-wrap: wrap;
-  width: 100%;
+  gap: 4px;
 }
