@@ -30,6 +30,7 @@ h1 {
   text-align: center;
   align-self: center;
   margin-bottom: 12px;
+  text-shadow: 0 0 10px whitesmoke;
 }
 
 h2 {
@@ -46,6 +47,7 @@ button {
   filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 25%));
   background-color: white;
   cursor: pointer;
+  border-radius: 2px;
 }
 
 button:hover {
@@ -66,7 +68,7 @@ form {
   gap: 16px;
 }
 
-.center-div {
+.flex-col {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -211,7 +213,7 @@ form {
 }
 
 .marks-table th, .marks-table td {
-  padding: 4px 8px;
+  padding: 6px 10px;
   border: 1px solid rgba(173, 30, 123, 0.5);
 }
 
@@ -225,6 +227,12 @@ form {
 
 .marks-table tbody tr:last-of-type {
   border-bottom: 2px solid #580c4e;
+}
+
+input[type="checkbox"] {
+  accent-color: #ffb9ff;
+  transform: scale(1.5);
+  margin: 0 5px;
 }
 
 #tapes {
@@ -246,9 +254,12 @@ marquee {
   font-weight: 800;
 }
 
+input {
+  font-size: 15px;
+}
+
 input::placeholder {
-  font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   opacity: 75%;
 }
 
