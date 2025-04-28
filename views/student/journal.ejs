@@ -26,22 +26,13 @@
             </tr>
         </thead>
         <tbody>
-            <% marks.forEach(lesson => { %>
-                <% lesson.marks.forEach(mark => { %>
-                    <tr>
-                        <td><%= lesson.date %></td>
-                        <td><%= lesson.name %></td>
-                        <td><%= mark.mark %></td>
-                        <td><%= mark.attendance ? "✅" : "❌" %></td>
-                    </tr>
-                <% }) %>
-                <% if (lesson.marks.length === 0) { %>
-                    <tr>
-                        <td><%= lesson.date %></td>
-                        <td><%= lesson.name %></td>
-                        <td colspan="2">-</td>
-                    </tr>
-                <% } %>
+            <% marks.forEach(lessonMark => { %>
+                <tr>
+                    <td><%= lessonMark.lesson.date %></td>
+                    <td><%= lessonMark.lesson.name %></td>
+                    <td><%= lessonMark.mark.mark %></td>
+                    <td><%= lessonMark.mark.attendance ? "✅" : "❌" %></td>
+                </tr>
             <% }) %>
         </tbody>
     </table>

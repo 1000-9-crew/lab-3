@@ -1,14 +1,13 @@
 const teacherService = require("../services/teacherService");
+const { SubjectCreateDTO } = require("../model/Subject");
+const { LessonCreateDTO } = require("../model/Lesson");
+const { MarkCreateDTO, MarkUpdateDTO } = require("../model/Mark");
 
 exports.getSubjects = async (req, res, next) => {
     try {
         res.render("teacher/subjects", {
             user: res.locals.user,
             subjects: await teacherService.getSubjects(res.locals.user.id),
-            // [
-            //     { id: 1, name: "Swagalogy" },
-            //     { id: 2, name: ".Net" },
-            // ]
         });
     }
     catch (err) {
@@ -24,25 +23,10 @@ exports.getSubjectInfo = async (req, res, next) => {
             user: res.locals.user,
             subject: await teacherService.getSubject(res.locals.user.id, subject_id),
             lessons: await teacherService.getSubjectLessons(res.locals.user.id, subject_id),
-            // [
-            //     { id: 1, name: "Lesson 1", date: "2023-10-01" },
-            //     { id: 2, name: "Lesson 2", date: "2023-10-02" },
-            //     { id: 3, name: "Lesson 3", date: "2023-10-03" }
-            // ],
             students: {
                 enrolled: await teacherService.getEnrolledStudents(res.locals.user.id, subject_id),
                 unenrolled: await teacherService.getUnenrolledStudents(res.locals.user.id, subject_id)
             }
-            // students: {
-            //     enrolled: [
-            //         { id: 1, name: "хтось хтось хтось хтось" },
-            //         { id: 2, name: "хтось хтось хтось тіпа" }
-            //     ],
-            //     unenrolled: [
-            //         { id: 1, name: "хтось хтось хтось хтось" },
-            //         { id: 2, name: "хтось хтось хтось тіпа" },
-            //     ]
-            // }
         });
     }
     catch (err) {
@@ -60,20 +44,6 @@ exports.getLessonJournal = async (req, res, next) => {
             lesson: await teacherService.getLesson(res.locals.user.id, lesson_id),
             students: await teacherService.getEnrolledStudents(res.locals.user.id, subject_id),
             marks: await teacherService.getLessonMarks(res.locals.user.id, lesson_id),
-            // [
-            //     {
-            //         id: 1,
-            //         student: { id: 1, name: "хтось хтось хтось хтось" },
-            //         mark: 52,
-            //         attendance: true
-            //     },
-            //     {
-            //         id: 2,
-            //         student: { id: 2, name: "хтось хтось хтось" },
-            //         mark: 89,
-            //         attendance: false
-            //     },
-
         });
     }
     catch (err) {
@@ -87,7 +57,7 @@ exports.createSubject = async (req, res, next) => {
     const { name } = req.matchedData;
 
     try {
-        await teacherService.createSubject(res.locals.user.id, { name });
+        await teacherService.createSubject(res.locals.user.id, new SubjectCreateDTO(name));
         return res.redirect('back');
     }
     catch (err) {
@@ -100,7 +70,7 @@ exports.createLesson = async (req, res, next) => {
     const { name, date } = req.matchedData;
 
     try {
-        await teacherService.createLesson(res.locals.user.id, subject_id, { name, date });
+        await teacherService.createLesson(res.locals.user.id, subject_id, new LessonCreateDTO(name, date));
         return res.redirect('back');
     }
     catch (err) {
@@ -125,7 +95,7 @@ exports.createMark = async (req, res, next) => {
     const { studentId, mark, attendance } = req.matchedData;
 
     try {
-        await teacherService.createMark(res.locals.user.id, lesson_id, studentId, { mark, attendance });
+        await teacherService.createMark(res.locals.user.id, lesson_id, studentId, new MarkCreateDTO(mark, attendance));
         return res.redirect('back');
     }
     catch (err) {
@@ -150,7 +120,7 @@ exports.editMark = async (req, res, next) => {
     const { mark, attendance } = req.matchedData;
 
     try {
-        await teacherService.editMark(res.locals.user.id, mark_id, { mark, attendance });
+        await teacherService.editMark(res.locals.user.id, mark_id, new MarkUpdateDTO(mark, attendance));
         return res.redirect('back');
     }
     catch (err) {

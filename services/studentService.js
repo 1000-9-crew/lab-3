@@ -3,12 +3,7 @@ const createError = require('http-errors');
 
 exports.getSubjects = async (studentId) => {
     subjects = await journalRepository.findSubjectsbyStudentId(studentId);
-    return subjects.map(subject => {
-        return {
-            id: subject.id,
-            name: subject.name,
-        };
-    });
+    return subjects;
 };
 
 exports.getSubjectJournal = async (studentId, subjectId) => {
@@ -19,25 +14,7 @@ exports.getSubjectJournal = async (studentId, subjectId) => {
     const marks = await journalRepository.findMarksByStudentIdAndSubjectId(studentId, subjectId);
 
     return {
-        subject: {id: subject.id, name: subject.name},
+        subject: subject,
         marks: marks
     };
-    // marks: [
-    //     {
-    //         date: "2025-03-28",
-    //         name: "swagg is:",
-    //         marks: [
-    //             {
-    //                 mark: 80,
-    //                 attendance: true,
-    //             },
-    //         ],
-    //     },
-    //     {
-    //         date: "2025-03-29",
-    //         name: "swagg is: 2",
-    //         marks: [
-    //         ],
-    //     },
-    // ]
 };

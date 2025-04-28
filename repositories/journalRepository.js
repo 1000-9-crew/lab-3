@@ -1,78 +1,48 @@
 const { readJson, writeJson } = require("./jsonReader");
-
-exports.findAllStudents = async () => {
-    const users = await readJson("users.json");
-    const students = users.filter(user => user.role === "student");
-
-    return students.map(student => {
-        return {
-            id: student.id,
-            name: student.name,
-        };
-    });
-};
-
-exports.findStudentById = async (studentId) => {
-    const users = await readJson("users.json");
-    const student = users.find(user => user.id === studentId && user.role === "student");
-    if (!student) return null;
-
-    return student;
-};
-
-exports.findAllTeachers = async () => {
-    const users = await readJson("users.json");
-    const teachers = users.filter(user => user.role === "teacher");
-
-    return teachers.map(teacher => {
-        return {
-            id: teacher.id,
-            name: teacher.name,
-        };
-    });
-}
+const { Mark, LessonMark, MarkDetails, StudentMark } = require("../model/Mark");
+const { Subject } = require("../model/Subject");
+const { Lesson } = require("../model/Lesson");
+const userRepository = require("./userRepository");
+const { Student } = require("../model/User");
+const { Enrollment } = require("../model/Enrollment");
 
 exports.findSubjectsbyStudentId = async (studentId) => {
     const enrollments = await readJson("enrollments.json");
     const subjects = await readJson("subjects.json");
 
-    const studentEnrollments = enrollments.filter(enrollment => enrollment.studentId === studentId);
-    const subjectIds = studentEnrollments.map(enrollment => enrollment.subjectId);
-    const studentSubjects = subjects.filter(subject => subjectIds.includes(subject.id));
+    const studentSubjects = subjects.filter(subject =>
+        enrollments.some(enrollment => enrollment.studentId === studentId && enrollment.subjectId === subject.id)
+    );
 
-    return studentSubjects;
+    return studentSubjects ? studentSubjects.map(subject => Subject.fromJson(subject)) : null;
 };
 
 exports.findSubjectsByTeacherId = async (teacherId) => {
     const subjects = await readJson("subjects.json");
-
     const teacherSubjects = subjects.filter(subject => subject.teacherId === teacherId);
-    return teacherSubjects;
+
+    return teacherSubjects.map(subject => Subject.fromJson(subject));
 };
 
 exports.findSubjectById = async (subjectId) => {
     const subjects = await readJson("subjects.json");
-
     const subject = subjects.find(subject => subject.id === subjectId);
-    if (!subject) return null;
 
-    return subject;
+    return subject ? Subject.fromJson(subject) : null;
 };
 
 exports.findLessonById = async (lessonId) => {
     const lessons = await readJson("lessons.json");
-
     const lesson = lessons.find(lesson => lesson.id === lessonId);
-    if (!lesson) return null;
 
-    return lesson;
+    return lesson ? Lesson.fromJson(lesson) : null;
 };
 
 exports.findLessonsBySubjectId = async (subjectId) => {
     const lessons = await readJson("lessons.json");
-
     const subjectLessons = lessons.filter(lesson => lesson.subjectId === subjectId);
-    return subjectLessons;
+
+    return subjectLessons.map(lesson => Lesson.fromJson(lesson));
 };
 
 exports.findMarksByStudentIdAndSubjectId = async (studentId, subjectId) => {
@@ -85,16 +55,10 @@ exports.findMarksByStudentIdAndSubjectId = async (studentId, subjectId) => {
     const subjectMarks = marks.filter(mark => mark.studentId === studentId && lessonIds.includes(mark.lessonId));
     const resolvedMarks = subjectMarks.map(mark => {
         const lesson = subjectLessons.find(lesson => lesson.id === mark.lessonId);
-        return {
-            date: lesson.date,
-            name: lesson.name,
-            marks: [
-                {
-                    mark: mark.mark,
-                    attendance: mark.attendance,
-                }
-            ],
-        };
+        return new LessonMark(
+            Lesson.fromJson(lesson),
+            new MarkDetails(mark.mark, mark.attendance)
+        );
     });
 
     return resolvedMarks;
@@ -102,52 +66,39 @@ exports.findMarksByStudentIdAndSubjectId = async (studentId, subjectId) => {
 
 exports.findEnrolledStudentsBySubjectId = async (subjectId) => {
     const enrollments = await readJson("enrollments.json");
-    const students = await this.findAllStudents();
+    const students = await userRepository.findAllStudents();
 
     const subjectEnrollments = enrollments.filter(enrollment => enrollment.subjectId === subjectId);
     const studentIds = subjectEnrollments.map(enrollment => enrollment.studentId);
     const enrolledStudents = students.filter(student => studentIds.includes(student.id));
 
-    return enrolledStudents.map(student => {
-        return {
-            id: student.id,
-            name: student.name,
-        };
-    });
+    return enrolledStudents.map(student => new Student(student.id, student.name));
 };
 
 exports.findUnEnrolledStudentsBySubjectId = async (subjectId) => {
     const enrollments = await readJson("enrollments.json");
-    const students = await this.findAllStudents();
+    const students = await userRepository.findAllStudents();
 
     const subjectEnrollments = enrollments.filter(enrollment => enrollment.subjectId === subjectId);
     const studentIds = subjectEnrollments.map(enrollment => enrollment.studentId);
     const unEnrolledStudents = students.filter(student => !studentIds.includes(student.id));
 
-    return unEnrolledStudents.map(student => {
-        return {
-            id: student.id,
-            name: student.name,
-        };
-    });
+    return unEnrolledStudents.map(student => new Student(student.id, student.name));
 };
 
 exports.findMarksWithStudentByLessonId = async (lessonId) => {
     const marks = await readJson("marks.json");
-    const students = await this.findAllStudents();
+    const students = await userRepository.findAllStudents();
 
     const lessonMarks = marks.filter(mark => mark.lessonId === lessonId);
     const resolvedMarks = lessonMarks.map(mark => {
         const student = students.find(student => student.id === mark.studentId);
-        return {
-            id: mark.id,
-            student: {
-                id: student.id,
-                name: student.name,
-            },
-            mark: mark.mark,
-            attendance: mark.attendance,
-        };
+        return new StudentMark(
+            mark.id,
+            new Student(student.id, student.name),
+            mark.mark,
+            mark.attendance
+        );
     });
 
     return resolvedMarks;
@@ -155,29 +106,26 @@ exports.findMarksWithStudentByLessonId = async (lessonId) => {
 
 exports.insertSubject = async (subject) => {
     const subjects = await readJson("subjects.json");
-
-    const newSubject = {
-        id: Date.now(),
-        ...subject,
-    };
-
+    const newSubject = new Subject(
+        Date.now(),
+        subject.teacherId,
+        subject.name,
+    );
     subjects.push(newSubject);
     await writeJson("subjects.json", subjects);
-
     return newSubject;
 };
 
 exports.insertLesson = async (lesson) => {
     const lessons = await readJson("lessons.json");
-
-    const newLesson = {
-        id: Date.now(),
-        ...lesson,
-    };
-
+    const newLesson = new Lesson(
+        Date.now(),
+        lesson.subjectId,
+        lesson.name,
+        lesson.date,
+    );
     lessons.push(newLesson);
     await writeJson("lessons.json", lessons);
-
     return newLesson;
 };
 
@@ -200,25 +148,22 @@ exports.removeLessonById = async (lessonId) => {
 
 exports.insertMark = async (mark) => {
     const marks = await readJson("marks.json");
-
-    const newMark = {
-        id: Date.now(),
-        ...mark,
-    };
-
+    const newMark = new Mark(
+        Date.now(),
+        mark.lessonId,
+        mark.studentId,
+        mark.mark,
+        mark.attendance,
+    );
     marks.push(newMark);
     await writeJson("marks.json", marks);
-
     return newMark;
 };
 
 exports.findMarkById = async (markId) => {
     const marks = await readJson("marks.json");
-
     const mark = marks.find(mark => mark.id === markId);
-    if (!mark) return null;
-
-    return mark;
+    return mark ? Mark.fromJson(mark) : null;
 };
 
 exports.removeMarkById = async (markId) => {
@@ -233,20 +178,21 @@ exports.removeMarkById = async (markId) => {
     return true;
 };
 
-exports.updateMarkById = async (markId, mark) => {
+exports.updateMarkById = async (markId, newMark) => {
     const marks = await readJson("marks.json");
 
     const markIndex = marks.findIndex(mark => mark.id === markId);
     if (markIndex === -1) return null;
 
-    marks[markIndex] = {
-        ...marks[markIndex],
-        ...mark,
-    };
+    const mark = marks[markIndex];
+    mark.lessonId = newMark.lessonId;
+    mark.studentId = newMark.studentId;
+    mark.mark = newMark.mark;
+    mark.attendance = newMark.attendance;
 
     await writeJson("marks.json", marks);
 
-    return marks[markIndex];
+    return mark;
 };
 
 exports.insertEnrollment = async (enrollment) => {
@@ -272,9 +218,6 @@ exports.removeEnrollmentBySubjectIdAndStudentId = async (subjectId, studentId) =
 
 exports.findEnrollmentBySubjectIdAndStudentId = async (subjectId, studentId) => {
     const enrollments = await readJson("enrollments.json");
-
     const enrollment = enrollments.find(enrollment => enrollment.subjectId === subjectId && enrollment.studentId === studentId);
-    if (!enrollment) return null;
-
-    return enrollment;
+    return enrollment ? Enrollment.fromJson(enrollment) : null;
 }

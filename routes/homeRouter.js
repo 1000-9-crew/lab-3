@@ -13,10 +13,10 @@ router.get("/", async (req, res, next) => {
 
     try {
         res.locals.user = await authService.getUserProfilebyId(user.id); //userInfo;
-        if (res.locals.user.role === "teacher") {
+        if (res.locals.user.isTeacher()) {
             return res.redirect("/teacher/subjects/");
         }
-        else if (res.locals.user.role === "student") {
+        else if (res.locals.user.isStudent()) {
             return res.redirect("/student/subjects/");
         }
         else return next(createError(500, "Unknown user role."));
