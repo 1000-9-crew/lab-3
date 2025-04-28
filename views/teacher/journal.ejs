@@ -9,10 +9,10 @@
 </head>
 
 <body>
-    <a href="/">
+    <a href="/auth/logout">
         <h1>Е-щоденник 🎰</h1>
     </a>
-    <a href="/auth/logout"><button>вийти..😎</button></a>
+    <a href="/"><button>назад..😎</button></a>
     <p>
         <%=user.name%> - <%=user.role%>
     </p>
@@ -38,11 +38,11 @@
                             <%= mark.student.name %>
                         </td>
                         <td>
-                            <input type="number" name="mark" placeholder="Оцінка" value="<%= mark.mark %>"
+                            <input type="number" name="mark" placeholder="-" value="<%= mark.mark %>"
                                 style="width: 7ch;" min="0" max="100" form="updateForm-<%= mark.id %>" />
                         </td>
                         <td>
-                            <input type="checkbox" name="attendance" <%=mark.attendance ? 'checked' : '' %>
+                            <input type="checkbox" name="attendance" class="attendance" <%=mark.attendance ? 'checked' : '' %>
                                 form="updateForm-<%= mark.id %>" />
                         </td>
                         <td>
@@ -69,9 +69,9 @@
                             </option>
                             <% }) %>
                     </select>
-                    <input type="number" name="mark" placeholder="Оцінка" style="width: 7ch;" min="0" max="100" />
+                    <input type="number" name="mark" placeholder="Оцінка" min="0" max="100" />
                     <label>Присутність:
-                        <input type="checkbox" name="attendance" />
+                        <input type="checkbox" name="attendance" class="attendance"/>
                     </label>
 
                     <input type="hidden" name="lessonId" value="<%=lesson.id%>" />

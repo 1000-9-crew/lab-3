@@ -46,6 +46,7 @@ button {
   filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 25%));
   background-color: white;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 button:hover {
@@ -54,7 +55,7 @@ button:hover {
 }
 
 .fine-box {
-  padding: 8px;
+  padding: 30px;
   filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 25%));
   border: 2px solid rgba(255, 255, 255, 50%);
   backdrop-filter: blur(3px);
@@ -66,7 +67,16 @@ form {
   gap: 16px;
 }
 
-.center-div {
+form input, form select, form button {
+  font-size: 14px;
+  padding: 12px;
+}
+
+.fine-box1 {
+  padding: 20px;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 25%));
+  border: 2px solid rgba(255, 255, 255, 50%);
+  backdrop-filter: blur(3px);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -196,6 +206,7 @@ form {
 }
 
 .marks-table {
+  padding: 10px;
   border-collapse: collapse;
   min-width: 320px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 25%);
@@ -211,7 +222,7 @@ form {
 }
 
 .marks-table th, .marks-table td {
-  padding: 4px 8px;
+  padding: 10px;
   border: 1px solid rgba(173, 30, 123, 0.5);
 }
 
@@ -225,6 +236,11 @@ form {
 
 .marks-table tbody tr:last-of-type {
   border-bottom: 2px solid #580c4e;
+}
+
+.attendance {
+  transform: scale(1.5);
+  margin: 5px;
 }
 
 #tapes {
@@ -247,7 +263,7 @@ marquee {
 }
 
 input::placeholder {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 600;
   opacity: 75%;
 }
