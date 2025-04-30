@@ -1,11 +1,12 @@
 const authService = require("../services/authService");
 const createError = require('http-errors');
+const { UserCreateDTO, UserAuthDTO } = require("../model/User");
 
 exports.login = async (req, res, next) => {
     const { login, password } = req.matchedData;
 
     try {
-        const user = await authService.login(login, password);
+        const user = await authService.login(new UserAuthDTO(login, password));
 
         req.session.regenerate((err) => {
             if (err) return next(createError("Session regeneration failed"));
@@ -22,7 +23,7 @@ exports.register = async (req, res, next) => {
     const { name, login, password, role } = req.matchedData;
 
     try {
-        await authService.register(name, login, password, role);
+        await authService.register(new UserCreateDTO(name, login, password, role));
         res.redirect("/login");
     }
     catch (err) {

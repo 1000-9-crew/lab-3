@@ -1,23 +1,24 @@
 const userRepository = require("../repositories/userRepository");
 const createError = require('http-errors');
+const { UserProfile } = require("../model/User");
 
-exports.login = async (login, password) => {
-    const user = await userRepository.findByLogin(login);
+exports.login = async (userAuthDTO) => {
+    const user = await userRepository.findByLogin(userAuthDTO.login);
 
-    if (!user || user.password !== password) {
+    if (!user || user.password !== userAuthDTO.password) {
         throw createError(401, "Invalid login or password");
     };
 
-    return user;
+    return UserProfile.fromUser(user);
 }
 
-exports.register = async (name, login, password, role) => {
-    const existingUser = await userRepository.findByLogin(login);
+exports.register = async (userCreateDTO) => {
+    const existingUser = await userRepository.findByLogin(userCreateDTO.login);
     if (existingUser) {
         throw createError(409, "Login already in use");
     };
 
-    return await userRepository.insert(name, login, password, role);
+    return await userRepository.insert(userCreateDTO);
 }
 
 exports.getUserProfilebyId = async (id) => {
@@ -26,9 +27,5 @@ exports.getUserProfilebyId = async (id) => {
         throw createError("User not found");
     };
 
-    return {
-        id: user.id,
-        name: user.name,
-        role: user.role
-    };
+    return UserProfile.fromUser(user);
 }
